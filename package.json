@@ -41,6 +41,14 @@
     "usage",
     "tokens"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JackGuo0310/dsh-cost.git"
+  },
+  "homepage": "https://github.com/JackGuo0310/dsh-cost#readme",
+  "bugs": {
+    "url": "https://github.com/JackGuo0310/dsh-cost/issues"
+  },
   "engines": {
     "node": ">=18"
   },

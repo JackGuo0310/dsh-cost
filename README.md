@@ -2,6 +2,8 @@
 
 给 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的 Web GUI 加一条**每轮对话费用**：每轮回答结束后显示本轮花费和当前会话累计花费，点一下展开明细。
 
+> 仓库：https://github.com/JackGuo0310/dsh-cost
+
 ```
 你 ─────────────────────────────────────────────
 AI ─────────────────────────────────────────────
@@ -15,19 +17,26 @@ AI ─────────────────────────�
 
 ## 1. 安装
 
-### 方式 A：脚本安装（推荐，本地目录即可）
+先把仓库放到本地（已有本地目录可跳过）：
+
+```powershell
+git clone https://github.com/JackGuo0310/dsh-cost.git D:\Github\dsh-cost
+```
+
+### 方式 A：脚本安装（推荐）
 
 ```powershell
 cd D:\Github\dsh-cost
 node scripts\install-local.mjs
 ```
 
-脚本做两件事：
+脚本做三件事：
 
 1. 把包复制到 `~/.dsh/profiles/web/node_modules/dsh-cost`；
-2. 往 `~/.dsh/profiles/web/cordis.patch.yml` 追加一行 Loader 入口。
+2. 往 `~/.dsh/profiles/web/cordis.patch.yml` 追加一行 Loader 入口；
+3. 刷新已装 bundle 的时间戳，让已经打开的页面通过 HMR 直接换上新版本。
 
-然后**刷新 DSH 网页**。profile patch 是热加载的；如果没出现，重启 `dsh web`。
+首次安装后**刷新 DSH 网页**（profile patch 是热加载的；如果没出现，重启 `dsh web`）。之后每次改完代码重跑这个脚本即可，不用再手动刷新。
 
 参数：`--profile <dir>` 指定其它 profile，`--no-patch` 只复制文件，`--uninstall` 卸载。
 
@@ -51,9 +60,9 @@ node scripts\install-local.mjs
 
 > 想要 `pnpm install` 之后依然存在，就把 `"dsh-cost": "link:D:/Github/dsh-cost"` 写进 profile 的 `package.json` 依赖里，而不是手动复制。
 
-### 方式 C：作为 bundle（发布到 npm / git 后）
+### 方式 C：作为 bundle
 
-把 `dsh-cost` 加进 profile `package.json` 的 `dsh.profile.bundles`，包内的 `cordis.patch.yml` 会自动插入入口 —— 这时**不要**再手动加方式 B 的那一行，否则会插入两次。
+把 `dsh-cost` 加进 profile `package.json` 的 `dsh.profile.bundles`（依赖写成 git 地址或 npm 包名），包内的 `cordis.patch.yml` 会自动插入入口 —— 这时**不要**再手动加方式 B 的那一行，否则会插入两次。
 
 ---
 
