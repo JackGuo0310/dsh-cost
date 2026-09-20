@@ -82,6 +82,24 @@ function alreadyPatched(text) {
 	return /^\s*-?\s*name:\s*['"]?dsh-cost['"]?\s*$/m.test(text);
 }
 
+/**
+ * Append the Loader row to a patch document.
+ *
+ * A freshly initialised profile ships the empty document `[]`. Appending a block
+ * sequence after that flow sequence produces invalid YAML (`[]` followed by
+ * `- insert:` has no valid parse), which takes the whole patch layer down
+ * instead of adding a row, so the empty document is replaced rather than
+ * appended to. Comments around it are preserved.
+ *
+ * @param {string} text - Existing patch file contents (may be empty).
+ * @returns {string} Contents with the dsh-cost row added.
+ */
+function withPatchEntry(text) {
+	const withoutEmptyDoc = text.replace(/^[ \t]*\[\][ \t]*\r?\n?/m, '');
+	const base = withoutEmptyDoc.length > 0 && !withoutEmptyDoc.endsWith('\n') ? `${withoutEmptyDoc}\n` : withoutEmptyDoc;
+	return base + PATCH_ENTRY;
+}
+
 const options = parseArgs(process.argv.slice(2));
 
 if (options.help) {
@@ -136,8 +154,7 @@ if (options.patch) {
 	if (alreadyPatched(text)) {
 		console.log(`row already present in ${patchFile}`);
 	} else {
-		if (text.length > 0 && !text.endsWith('\n')) text += '\n';
-		await writeFile(patchFile, text + PATCH_ENTRY, 'utf8');
+		await writeFile(patchFile, withPatchEntry(text), 'utf8');
 		console.log(`added the dsh-cost row to ${patchFile}`);
 	}
 } else {
