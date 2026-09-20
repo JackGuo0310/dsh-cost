@@ -1,0 +1,13 @@
+# dsh bundle patch: inserts this plugin into a profile's layer stack.
+#
+# Only needed when the plugin is listed in the profile's `dsh.profile.bundles`.
+# If you instead add the row by hand to `~/.dsh/profiles/web/cordis.patch.yml`,
+# use this snippet and do NOT also add the package to `bundles` (you would insert
+# the row twice):
+#
+#   - insert:
+#       - id: dsh-cost
+#         name: dsh-cost
+- insert:
+    - id: dsh-cost
+      name: dsh-cost
