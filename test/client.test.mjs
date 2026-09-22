@@ -757,10 +757,21 @@ test('the session total accumulates every loaded turn', () => {
 	assert.match(onSecondTurn.text, /累计.*¥4\.501/s);
 });
 
-test('a turn with no usage and no priced history renders nothing', () => {
+test('a turn with no usage says so instead of rendering nothing', () => {
 	const useChat = makeUseChat(() => snapshotOf([{ turn: 1, time: at('2026-09-10T12:00:00Z') }]));
-	const { json } = renderTail({ turn: { turn: 1 }, useChat, t: tZh });
-	assert.equal(json, null);
+	const { text } = renderTail({ turn: { turn: 1 }, useChat, t: tZh });
+	assert.match(text, /本轮暂无用量数据/);
+	assert.doesNotMatch(text, /累计/);
+	assert.doesNotMatch(text, /¥/);
+});
+
+test('a no-usage turn still shows the running session total', () => {
+	const first = tailData({ turn: 1 });
+	const second = { turn: 2, time: at('2026-09-10T12:00:00Z') };
+	const useChat = makeUseChat(() => snapshotOf([first, second]));
+	const { text } = renderTail({ turn: { turn: 2 }, useChat, t: tZh });
+	assert.match(text, /本轮暂无用量数据/);
+	assert.match(text, /累计.*¥0\.000902/s);
 });
 
 test('a slot without useChat renders nothing instead of throwing', () => {

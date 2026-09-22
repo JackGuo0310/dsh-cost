@@ -747,7 +747,10 @@ window.__ModuleLoader__.load({
 			);
 
 			const cost = summary.turnCost;
-			if (cost === null && summary.pricedTurns === 0) return null;
+			// A completed turn with no usage still gets a line — it says so instead of
+			// vanishing, so a failed or interrupted turn is not mistaken for a missing
+			// one. Only a snapshot carrying no turn data at all renders nothing.
+			if (cost === null && summary.totalTurns === 0) return null;
 
 			const currency = cost?.currency ?? "CNY";
 			const turnText =
@@ -760,19 +763,20 @@ window.__ModuleLoader__.load({
 			const cacheText = formatPercent(cost?.cacheHitRate ?? null);
 			const hasSession = summary.pricedTurns > 0;
 
+			// Without usage the "本轮" label folds into the message itself, so the
+			// line reads "本轮暂无用量数据" instead of a bare amount slot.
 			const turnPart =
-				turnText === null
-					? null
+				cost === null
+					? jsx("span", { className: "dsh-cost-amount", children: t("cost.noUsage") })
 					: jsxs("span", {
 							children: [
 								jsx("span", { children: t("cost.turn") }),
 								jsx("span", { className: "dsh-cost-amount", children: turnText }),
 							],
 						});
-			const sepPart =
-				turnText !== null && hasSession
-					? jsx("span", { className: "dsh-cost-sep", "aria-hidden": true, children: "·" })
-					: null;
+			const sepPart = hasSession
+				? jsx("span", { className: "dsh-cost-sep", "aria-hidden": true, children: "·" })
+				: null;
 			const sessionPart = hasSession
 				? jsxs("span", {
 						children: [

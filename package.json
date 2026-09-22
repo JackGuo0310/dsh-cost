@@ -1,6 +1,6 @@
 {
   "name": "@jackguo0310/dsh-cost",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Per-turn and per-session API cost estimation for DeepSeek Harness conversations.",
   "type": "module",
   "main": "lib/index.js",
