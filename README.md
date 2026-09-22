@@ -60,11 +60,26 @@ That is the whole install. `dsh plugin` installs the package into
 
 Already running `dsh web`? Restart it once after installing, then refresh the page.
 
+### Install straight from GitHub
+
+No npm account or registry involved — useful while a release is not published yet:
+
+```bash
+dsh plugin --profile web add github:JackGuo0310/dsh-cost
+dsh web
+```
+
+The package builds nothing on install (the client half is a prebuilt bundle), so
+pnpm runs no `prepare` script and asks for no build approval.
+
 ### Update
 
 ```bash
 dsh plugin --profile web update @jackguo0310/dsh-cost
 ```
+
+The dependency is keyed by package name either way, so the same command updates a
+GitHub install too.
 
 ### Uninstall
 
