@@ -24,7 +24,12 @@
  */
 
 window.__ModuleLoader__.load({
-	id: "dsh-cost",
+	// Must be the npm package name, not a nickname: `@deepseek-ai/dsh-client-modules`
+	// keys its factory table by the boot manifest entry id, which is the Loader row's
+	// module specifier — the package name. A bundle that registers anything else
+	// fails `arrive()` with "loaded without registering <id>", which rejects the whole
+	// application batch, not just this plugin.
+	id: "@jackguo0310/dsh-cost",
 	factory: (require) => {
 		var module = { exports: {} };
 		var exports = module.exports;

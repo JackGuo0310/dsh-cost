@@ -40,6 +40,11 @@ const moduleTable = {
 	'react/jsx-runtime': await import('react/jsx-runtime'),
 };
 
+/** This package's own manifest — the source of the names the module system keys on. */
+const pkg = JSON.parse(
+	readFileSync(fileURLToPath(new URL('../package.json', import.meta.url)), 'utf8'),
+);
+
 const pluginUrl = new URL('../client/client.js', import.meta.url);
 await import(pluginUrl.href);
 
@@ -180,17 +185,18 @@ function snapshotOf(tails) {
 
 // #region Bundle contract
 
-test('bundle registers the plugin id and a complete plugin face', () => {
-	assert.equal(registration.id, 'dsh-cost');
+test('bundle registers under the package name, which is the module system key', () => {
+	// Cross-boundary contract: `@deepseek-ai/dsh-client-modules` looks the factory up
+	// by the boot manifest entry id, and that id is the Loader row's module specifier
+	// — the npm package name. Registering anything else (`dsh-cost`, say) throws
+	// "loaded without registering <id>" and rejects the whole application batch.
+	assert.equal(registration.id, pkg.name);
 	assert.equal(plugin.name, 'dsh-cost');
 	assert.deepEqual(plugin.inject, ['slots', 'locale']);
 	assert.equal(typeof plugin.apply, 'function');
 });
 
 test('package.json declares the client half where dsh-client-modules looks for it', () => {
-	const pkg = JSON.parse(
-		readFileSync(fileURLToPath(new URL('../package.json', import.meta.url)), 'utf8'),
-	);
 	assert.equal(pkg.dsh.client.platform, 'web');
 	assert.equal(typeof pkg.exports['./client'], 'string');
 	assert.ok(pkg.exports['./client'].endsWith('client.js'));
@@ -199,6 +205,15 @@ test('package.json declares the client half where dsh-client-modules looks for i
 		fileURLToPath(new URL(`../${pkg.exports['./client']}`, import.meta.url)),
 		fileURLToPath(pluginUrl),
 	);
+});
+
+test('the bundle id and the cordis bundle patch agree on the package name', () => {
+	// cordis.patch.yml is what makes the row exist; its `name` is the specifier the
+	// Loader imports, so it has to equal the package name the bundle registers.
+	const patch = readFileSync(fileURLToPath(new URL('../cordis.patch.yml', import.meta.url)), 'utf8');
+	const declared = /^\s*name:\s*'([^']+)'/m.exec(patch);
+	assert.ok(declared, 'cordis.patch.yml must declare a quoted row name');
+	assert.equal(declared[1], pkg.name);
 });
 
 test('apply registers dictionaries and the turn-tail entry', () => {
