@@ -1,5 +1,9 @@
 # dsh-cost
 
+[![npm](https://img.shields.io/npm/v/@jackguo0310/dsh-cost)](https://www.npmjs.com/package/@jackguo0310/dsh-cost)
+[![CI](https://github.com/JackGuo0310/dsh-cost/actions/workflows/ci.yml/badge.svg)](https://github.com/JackGuo0310/dsh-cost/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/@jackguo0310/dsh-cost)](LICENSE)
+
 Per-turn and per-session API cost estimation for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) web sessions.
 
 为 DeepSeek Harness 的 Web 会话提供费用统计：每轮回答结束后显示**本轮 API 花费**，并累计**整个 Session 的花费**，点一下展开明细。
