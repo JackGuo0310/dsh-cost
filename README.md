@@ -12,7 +12,7 @@ AI ─────────────────────────�
 ```
 
 > Note: the unscoped npm name `dsh-cost` belongs to an unrelated plugin by another
-> author. This project publishes as **`@jackguo/dsh-cost`**.
+> author. This project publishes as **`@jackguo0310/dsh-cost`**.
 
 ---
 
@@ -50,7 +50,7 @@ the Chat turn-usage projection — those are the surfaces to re-check when DSH m
 ## Installation
 
 ```bash
-dsh plugin --profile web add @jackguo/dsh-cost
+dsh plugin --profile web add @jackguo0310/dsh-cost
 dsh web
 ```
 
@@ -63,13 +63,13 @@ Already running `dsh web`? Restart it once after installing, then refresh the pa
 ### Update
 
 ```bash
-dsh plugin --profile web update @jackguo/dsh-cost
+dsh plugin --profile web update @jackguo0310/dsh-cost
 ```
 
 ### Uninstall
 
 ```bash
-dsh plugin --profile web remove @jackguo/dsh-cost
+dsh plugin --profile web remove @jackguo0310/dsh-cost
 ```
 
 Removal also drops the bundle from the profile's `dsh.profile.bundles`, so the

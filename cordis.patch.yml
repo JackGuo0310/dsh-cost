@@ -4,7 +4,7 @@
 # `dsh.bundle.patch` in package.json, and `@deepseek-ai/dsh-plugin-manager` reads it
 # when the package is installed:
 #
-#   dsh plugin --profile web add @jackguo/dsh-cost
+#   dsh plugin --profile web add @jackguo0310/dsh-cost
 #
 # The manager appends the package name to `dsh.profile.bundles` in the profile's
 # package.json, then applies the row below, which mounts the plugin into the
@@ -20,4 +20,4 @@
 # for your own overrides, and duplicating the row inserts the plugin twice.
 - insert:
     - id: dsh-cost
-      name: '@jackguo/dsh-cost'
+      name: '@jackguo0310/dsh-cost'
