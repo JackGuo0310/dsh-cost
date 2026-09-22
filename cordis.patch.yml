@@ -1,13 +1,23 @@
-# dsh bundle patch: inserts this plugin into a profile's layer stack.
+# dsh-cost — DSH bundle patch.
 #
-# Only needed when the plugin is listed in the profile's `dsh.profile.bundles`.
-# If you instead add the row by hand to `~/.dsh/profiles/web/cordis.patch.yml`,
-# use this snippet and do NOT also add the package to `bundles` (you would insert
-# the row twice):
+# This file is the plugin's only entry point into a DSH profile. It is declared as
+# `dsh.bundle.patch` in package.json, and `@deepseek-ai/dsh-plugin-manager` reads it
+# when the package is installed:
 #
-#   - insert:
-#       - id: dsh-cost
-#         name: dsh-cost
+#   dsh plugin --profile web add @jackguo/dsh-cost
+#
+# The manager appends the package name to `dsh.profile.bundles` in the profile's
+# package.json, then applies the row below, which mounts the plugin into the
+# profile's layer stack.
+#
+# `name` is the module specifier the Loader imports from the profile root, so it
+# must stay the published package name. It is quoted because a bare YAML scalar
+# cannot start with `@`. `id` is the plugin's own row/plugin identity: it must match
+# the `name` this package exports from lib/index.js, and the id its client bundle
+# registers with the browser module system.
+#
+# Do not hand-edit `<profile>/cordis.patch.yml` to add this row: that user layer is
+# for your own overrides, and duplicating the row inserts the plugin twice.
 - insert:
     - id: dsh-cost
-      name: dsh-cost
+      name: '@jackguo/dsh-cost'

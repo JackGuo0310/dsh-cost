@@ -1,4 +1,11 @@
 node_modules/
+coverage/
 *.log
-.DS_Store
+*.tgz
+.env
+.env.*
+
+# Windows / macOS noise
 Thumbs.db
+Desktop.ini
+.DS_Store

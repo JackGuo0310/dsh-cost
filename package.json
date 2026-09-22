@@ -1,7 +1,7 @@
 {
-  "name": "dsh-cost",
+  "name": "@jackguo/dsh-cost",
   "version": "0.1.0",
-  "description": "Per-turn and per-session API cost estimate for DeepSeek Harness conversations. · DSH 对话费用插件：每轮显示本轮花费与会话累计花费。",
+  "description": "Per-turn and per-session API cost estimation for DeepSeek Harness conversations.",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -31,11 +31,15 @@
   },
   "scripts": {
     "check": "node --check client/client.js && node --check lib/index.js",
-    "test": "node test/client.test.mjs"
+    "test": "node test/client.test.mjs",
+    "prepublishOnly": "npm run check && npm test"
   },
   "keywords": [
+    "dsh",
     "dsh-plugin",
+    "deepseek",
     "deepseek-harness",
+    "harness",
     "cost",
     "pricing",
     "usage",
@@ -48,6 +52,10 @@
   "homepage": "https://github.com/JackGuo0310/dsh-cost#readme",
   "bugs": {
     "url": "https://github.com/JackGuo0310/dsh-cost/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "engines": {
     "node": ">=18"
