@@ -287,15 +287,21 @@ test('weekends are always off-peak', () => {
 	assert.equal(api.deepseekBucketAt(at('2026-09-13T06:00:00Z')), 'offPeak', 'Sunday 14:00');
 });
 
-test('holidays can be declared off-peak', () => {
-	assert.equal(api.deepseekBucketAt(at('2026-10-01T02:00:00Z')), 'peak', 'Thursday 10:00, undeclared');
-	api.setDeepSeekHolidays(['2026-10-01']);
+test('the shipped 2026 holidays are off-peak by default', () => {
+	assert.equal(api.deepseekBucketAt(at('2026-10-01T02:00:00Z')), 'offPeak', 'National Day, Thursday 10:00');
+	assert.equal(api.deepseekBucketAt(at('2026-02-18T02:00:00Z')), 'offPeak', 'Spring Festival weekday');
+	assert.equal(api.deepseekBucketAt(at('2026-09-10T02:00:00Z')), 'peak', 'plain Thursday stays peak');
+});
+
+test('the holiday set can be replaced', () => {
+	api.setDeepSeekHolidays(['2026-09-10']);
 	try {
-		assert.equal(api.deepseekBucketAt(at('2026-10-01T02:00:00Z')), 'offPeak');
+		assert.equal(api.deepseekBucketAt(at('2026-09-10T02:00:00Z')), 'offPeak');
+		assert.equal(api.deepseekBucketAt(at('2026-10-01T02:00:00Z')), 'peak', 'replacing drops the shipped entries');
 	} finally {
-		api.setDeepSeekHolidays([]);
+		api.setDeepSeekHolidays(api.DEEPSEEK_HOLIDAYS_2026);
 	}
-	assert.equal(api.deepseekBucketAt(at('2026-10-01T02:00:00Z')), 'peak');
+	assert.equal(api.deepseekBucketAt(at('2026-10-01T02:00:00Z')), 'offPeak', 'shipped list restored');
 });
 
 /**

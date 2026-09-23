@@ -137,7 +137,8 @@ does not bill disk-cache writes, so that rate is 0.
 
 Both live in [`client/client.js`](client/client.js), in the `DEEPSEEK_BOOK` data
 structure. Chinese statutory holidays cannot be derived from a clock, so they are a
-list, empty by default:
+list; the **2026 mainland-China dates** ship as the default. Each January, replace
+them with the new State Council notice:
 
 ```js
 setDeepSeekHolidays(["2027-01-01", "2027-02-05"]); // Beijing time, YYYY-MM-DD
@@ -213,7 +214,8 @@ render emits a React warning and no call site asks for a missing locale key.
   it is priced with the first model and marked `≈`.
 - **The session total covers the loaded turns.** Turns paged out of the loaded window
   are not in the total; the panel's `已计价 n/m 轮` shows the coverage.
-- **The statutory-holiday list is empty by default** — fill it in for your region.
+- **The shipped holiday list covers 2026 mainland-China statutory holidays only** —
+  update it yearly, and for your region.
 - Failed or interrupted turns with no usage data are counted but not charged.
 
 ---

@@ -83,12 +83,36 @@ window.__ModuleLoader__.load({
 		/**
 		 * Chinese statutory holidays are not derivable from a clock, so they are
 		 * simply listed. DeepSeek bills a holiday as off-peak; a missing entry only
-		 * ever over-estimates a weekday cost, never under-estimates it. Add
-		 * `YYYY-MM-DD` keys for whichever years you care about.
+		 * ever over-estimates a weekday cost, never under-estimates it. Weekends are
+		 * off-peak already, so only weekday holiday dates change the price.
+		 *
+		 * Shipped default: the 2026 mainland-China arrangement (国办发明电〔2025〕7号,
+		 * published 2025-11-04). Replace it each January with
+		 * `setDeepSeekHolidays(...)` or by editing the list below.
 		 *
 		 * @example setDeepSeekHolidays(['2027-01-01', '2027-02-05'])
 		 */
-		const DEEPSEEK_HOLIDAYS = new Set([]);
+		const DEEPSEEK_HOLIDAYS_2026 = Object.freeze([
+			// 元旦 1/1–1/3
+			"2026-01-01", "2026-01-02", "2026-01-03",
+			// 春节 2/15–2/23
+			"2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19",
+			"2026-02-20", "2026-02-21", "2026-02-22", "2026-02-23",
+			// 清明 4/4–4/6
+			"2026-04-04", "2026-04-05", "2026-04-06",
+			// 劳动节 5/1–5/5
+			"2026-05-01", "2026-05-02", "2026-05-03", "2026-05-04", "2026-05-05",
+			// 端午 6/19–6/21
+			"2026-06-19", "2026-06-20", "2026-06-21",
+			// 中秋 9/25–9/27
+			"2026-09-25", "2026-09-26", "2026-09-27",
+			// 国庆 10/1–10/7
+			"2026-10-01", "2026-10-02", "2026-10-03", "2026-10-04", "2026-10-05",
+			"2026-10-06", "2026-10-07",
+		]);
+
+		/** Live holiday set; starts as the shipped 2026 list. */
+		const DEEPSEEK_HOLIDAYS = new Set(DEEPSEEK_HOLIDAYS_2026);
 
 		/**
 		 * Replace the holiday set used for off-peak detection.
@@ -975,6 +999,7 @@ window.__ModuleLoader__.load({
 		exports.__test = {
 			DEEPSEEK_BOOK,
 			DEEPSEEK_PEAK_WINDOWS,
+			DEEPSEEK_HOLIDAYS_2026,
 			PRICE_BOOKS,
 			COST_LINE_LABELS,
 			registerPriceBook,
