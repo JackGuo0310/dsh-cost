@@ -60,6 +60,9 @@
   "engines": {
     "node": ">=18"
   },
+  "peerDependencies": {
+    "@deepseek-ai/dsh": "0.1.7-rc.1"
+  },
   "license": "MIT",
   "devDependencies": {
     "react": "^18.3.1",

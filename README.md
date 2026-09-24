@@ -41,10 +41,12 @@ AI ─────────────────────────�
 
 | | |
 | --- | --- |
-| DeepSeek Harness | `0.1.6-alpha.2` — the version this release was built and tested against |
+| DeepSeek Harness | `0.1.7-rc.1` — the version this release targets and was tested against |
 | Node.js | `>=18` (developed and tested on `24.x`) |
 | pnpm | required by `dsh plugin`, which is a pnpm passthrough |
 
+The package declares its tested DSH target as a peer dependency, so DSH `0.1.7-rc.1`
+can perform the compatibility check before installation and at Profile startup.
 Other DSH versions are not claimed as compatible. The plugin uses DSH's
 `conversation.chat.turnTail` client slot, the `slots` / `locale` client services, and
 the Chat turn-usage projection — those are the surfaces to re-check when DSH moves.
